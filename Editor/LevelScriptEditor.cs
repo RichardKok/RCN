@@ -15,12 +15,16 @@ public class MyPlayerEditor : Editor {
 	SerializedProperty releaseProp;
 	SerializedProperty sceneEnabledProp;
 	SerializedProperty speedSensitivityProp;
-	private string[] modeOptions;
+	private float minIntensityRefValue;
+	private float maxIntensityRefValue;
+	string[] modeOptions;
 	private int modeIndex = 2; //Temporary testing setting
 	private float maxVisualRange;
 	private int maxADSR;
 	private float visualRangeStart;
 	private int adsrStart;
+	private float minIntensityLimit;
+	private float maxIntensityLimit;
 	
 	void OnEnable () {
 		// Setup the SerializedProperties.
@@ -30,11 +34,17 @@ public class MyPlayerEditor : Editor {
 		sustainProp = serializedObject.FindProperty ("sustain");
 		releaseProp = serializedObject.FindProperty ("release");
 		speedSensitivityProp = serializedObject.FindProperty("speedSensitivity");
+		minIntensityLimit = serializedObject.FindProperty("minIntensity").floatValue;
+		maxIntensityLimit = serializedObject.FindProperty("maxIntensity").floatValue;
 		modeOptions = ((MasterView)target).modeOptions;
+		maxVisualRange = serializedObject.FindProperty("maxVisRange").floatValue;
+		visualRangeStart = serializedObject.FindProperty ("visRangeStart").floatValue;
 		maxVisualRange = serializedObject.FindProperty("maxVisRange").floatValue;
 		visualRangeStart = serializedObject.FindProperty ("visRangeStart").floatValue;
 		maxADSR = serializedObject.FindProperty("maxADSR").intValue;
 		adsrStart = serializedObject.FindProperty("adsrStart").intValue;
+		minIntensityRefValue = 2.5f;
+		maxIntensityRefValue = 7.5f;
 	}
 
 	public override void OnInspectorGUI() {
@@ -48,6 +58,8 @@ public class MyPlayerEditor : Editor {
 		addSpaces(marginSm);
 		createVisualRangeTools();
 		addSpaces(marginSm);
+		createIntensityScalingTools();
+		addSpaces(marginSm);
 		createADSRGUITools();
 		addSpaces(marginSm);
 		if (GUILayout.Button("Apply settings")) ((MasterView)target).ApplyLightChanges(modeOptions[modeIndex]);
@@ -57,6 +69,11 @@ public class MyPlayerEditor : Editor {
 	public void addSpaces(int amount) {
 		for (int i = 0; i < amount; i++) EditorGUILayout.Space ();
 	}
+	
+	public void createIntensityScalingTools() {
+		EditorGUILayout.LabelField("Light intensity scaling range [Dim - Bright]");
+		EditorGUILayout.MinMaxSlider(ref minIntensityRefValue, ref maxIntensityRefValue, minIntensityLimit, maxIntensityLimit);
+	} 
 	
 	public void createVisualRangeTools() {
 		EditorGUILayout.Slider(visualRangeProp, 0, maxVisualRange, new GUIContent ("VisualRange"));

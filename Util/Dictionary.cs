@@ -23,6 +23,12 @@ public class Dictionary : MonoBehaviour
 	public const int Flicker = 2;
 	public const int Flickering = 3;
 	
+	//ASDR options
+	public const int Attack = 0;
+	public const int Decay = 1;
+	public const int Sustain = 2;
+	public const int Release = 3;
+	
 	//Individual lamp roles
 	public const int Slave = 0;
 	public const int Seducer = 1;

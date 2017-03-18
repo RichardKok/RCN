@@ -14,6 +14,8 @@ public class MasterView : View<MasterApplication>
 	public int decay;
 	public int sustain;
 	public int release;
+	public float minIntensity;
+	public float maxIntensity;
 	public  string[] modeOptions;
 	
 
@@ -28,6 +30,8 @@ public class MasterView : View<MasterApplication>
 		decay = adsrStart;
 		sustain = adsrStart;
 		release = adsrStart;
+		minIntensity = 0.1f;
+		maxIntensity = 10.0f;
 		modeOptions = new string[]{Dictionary.Disabled, Dictionary.Default, Dictionary.GoalMode, Dictionary.Snooker};
 	}
 

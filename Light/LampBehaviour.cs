@@ -15,31 +15,55 @@ public class LampBehaviour : MonoBehaviour, IListener, ISwitch
 	public int Role { get; set; }
 	private int role;
 	
-	private int attack;
-	private int decay;
-	private int sustain;
-	private int release;
+	private int attackTime;
+	private int decayTime;
+	private int sustainTime;
+	private int releaseTime;
 	
 	public void ApplyADSR(int[] adsr) {
-		attack = adsr[0];
-		decay = adsr[1];
-		sustain = adsr[2];
-		release = adsr[3];
+		attackTime = adsr[0];
+		decayTime = adsr[1];
+		sustainTime = adsr[2];
+		releaseTime = adsr[3];
 	}
 	
 	public int Switch(int setting){
 		switch (setting){
 		case Dictionary.Off:
-			return decay + sustain + release;
+			switchSetting = Dictionary.Off;
+			ASDR(new int[] {Dictionary.Release});
+			return releaseTime;
 		case Dictionary.On:
-			return attack;
+			switchSetting = Dictionary.On;
+			ASDR(new int[] {Dictionary.Attack, Dictionary.Decay});
+			return attackTime;
 		case Dictionary.Flicker:
-			return attack + decay + sustain + release;
+			switchSetting = Dictionary.Flicker;
+			ASDR(new int[] {Dictionary.Attack, Dictionary.Decay, Dictionary.Sustain, Dictionary.Release});
+			return attackTime + decayTime + sustainTime + releaseTime;
 		case Dictionary.Flickering:
-			return attack + decay + sustain + release;
+			switchSetting = Dictionary.Flickering;
+			ASDR(new int[] {Dictionary.Attack, Dictionary.Decay, Dictionary.Sustain, Dictionary.Release});
+			return attackTime + decayTime + sustainTime + releaseTime;
 		}
 		return 0;
 	}
+	
+	public void ASDR(params int[] adsrOptions) {
+		foreach (int option in adsrOptions) {
+			switch (option) {
+			case Dictionary.Attack:
+				break;
+			case Dictionary.Decay:
+				break;
+			case Dictionary.Sustain:
+				break;
+			case Dictionary.Release:
+				break;
+			}
+		}
+	}
+	
 
 	public void OnTriggerEnter(Collider col_data) {
 		if (parent.ModeBehaviour != null && 

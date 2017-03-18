@@ -55,7 +55,7 @@ public class GoalSetting : IMode
 	private void Seduce() {
 		LampBehaviour[] orderedLamps = OrderNonMasterLampsToDistanceFromSeducer();
 		foreach (LampBehaviour lamp  in orderedLamps) {
-			int timeForLampToReturnToFirstState = lamp.Switch(Dictionary.Flicker);
+			lamp.Switch(Dictionary.Flicker);
 			//StartCoroutine(Wait(timeForLampToReturnToFirstState));
 		}
 		//get an array of slave lamps proportional to distance, then in an interval activate them. the deactivatian happens by the lamps adsr settings themselve
@@ -85,21 +85,24 @@ public class GoalSetting : IMode
 	}
 
 	private LampBehaviour[] OrderNonMasterLampsToDistanceFromSeducer() {
-		LampBehaviour closestLamp = null;
+		foreach (LampBehaviour lamp in lampScripts) lamp.isOrdered = false;
 		LampBehaviour[] orderedLamps = new LampBehaviour[lampScripts.Length - 1];
-		float distFromSeducer = 0.0f;
-		for (int i = 0; i < orderedLamps.Length; i++) {
-			float minDistance = 1000;
-			foreach (LampBehaviour lamp in lampScripts) {
-				if (!lamp.isOrdered && !lamp.Role.Equals(Dictionary.Seducer)
-					&& Util.Magnitude(master.transform.position, lamp.transform.position) < minDistance) {
-						minDistance = distFromSeducer;
-						closestLamp = lamp;
-					}
-			}
-		orderedLamps[i] = closestLamp;
-		closestLamp.isOrdered = true;
-		}
+		for (int i = 0; i < orderedLamps.Length; i++) orderedLamps[i] = GetClosestUnorderedLamp ();
 		return orderedLamps;
+	}
+
+	private LampBehaviour GetClosestUnorderedLamp () {
+		float minDistance = 1000.0f; //Random high value
+		float distFromSeducer = 0.0f;
+		LampBehaviour closestLamp = null;
+		foreach (LampBehaviour lamp in lampScripts) {
+			distFromSeducer = Util.Magnitude (seducer.transform.position, lamp.transform.position);
+			if (!lamp.isOrdered && !lamp.Role.Equals (Dictionary.Seducer) && distFromSeducer < minDistance) {
+				minDistance = distFromSeducer;
+				closestLamp = lamp;
+				closestLamp.isOrdered = true;
+			}
+		}
+		return closestLamp;	
 	}
 }

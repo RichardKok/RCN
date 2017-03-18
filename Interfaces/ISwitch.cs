@@ -1,5 +1,6 @@
-﻿
-public interface ISwitch
-{
-	int Switch(int setting);
+﻿namespace trackingRoom.interfaces {
+	public interface ISwitch
+	{
+		int Switch(int setting);
+	}
 }

@@ -15,9 +15,9 @@ public class MasterView : View<MasterApplication>
 	public int sustain;
 	public int release;
 	public float minIntensity;
+	public float sustainIntensity;
 	public float maxIntensity;
 	public  string[] modeOptions;
-	
 
 	public void Awake() {
 		maxADSR = 50;
@@ -39,7 +39,8 @@ public class MasterView : View<MasterApplication>
 		app.Notify(Dictionary.MasterApplyTracker, speedSensitivity);
 	}
 	
-	public void ApplyLightChanges(string mode) {
-		app.Notify(Dictionary.MasterApplyLights, attack, decay, sustain, release, visualRange, mode);
+	public void ApplyLightChanges(string mode, float minIntensityRefValue, float sustainIntensity, float maxIntensityRefValue) {
+		app.Notify(Dictionary.MasterApplyLights, attack, decay, sustain, release, 
+			minIntensityRefValue, sustainIntensity, maxIntensityRefValue, visualRange, mode);
 	}
 }

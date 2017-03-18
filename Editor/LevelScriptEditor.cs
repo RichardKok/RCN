@@ -62,7 +62,7 @@ public class MyPlayerEditor : Editor {
 		addSpaces(marginSm);
 		createADSRGUITools();
 		addSpaces(marginSm);
-		if (GUILayout.Button("Apply settings")) ((MasterView)target).ApplyLightChanges(modeOptions[modeIndex]);
+		if (GUILayout.Button("Apply settings")) ((MasterView)target).ApplyLightChanges(modeOptions[modeIndex], minIntensityRefValue, maxIntensityRefValue);
 		serializedObject.ApplyModifiedProperties ();
 	}
 

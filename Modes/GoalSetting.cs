@@ -1,24 +1,26 @@
 ﻿using UnityEngine;
-using System.Collections;
 using trackingRoom.util;
-using System.Collections.Generic;
 using trackingRoom.interfaces;
 
 public class GoalSetting : IMode
-{
-	private LampBehaviour[] lampScripts; 
-	private LampBehaviour master;
-	private LampBehaviour seducer;
+{	
+	//PUBLIC INSTANCE VARIABLES
 	public int Active { get; set; }
 	private int active;
 	
+	//PRIVATE INSTANCE VARIABLES
+	private LampBehaviour[] lampScripts; 
+	private LampBehaviour master;
+	private LampBehaviour seducer;
+	
+	//CONSTRUCTOR
 	public GoalSetting(LampBehaviour[] lampScripts) {
 		this.lampScripts = lampScripts;
 		SetRoles(true);
 	}
-
-	//Public functions
-	//Interface implementation
+	
+	//PUBLIC FUNCTIONS
+	//INTERFACE IMPLEMENTATION
 	public void OnUserTriggerChange(int role, bool inRange) {
 		switch(role) {
 		case Dictionary.Seducer:
@@ -39,10 +41,8 @@ public class GoalSetting : IMode
 			break;
 		}
 	}
-	//End of interface implementation
-
-
-	//Private functions
+	//END OF INTERFACE IMPLEMENTATION
+	//PRIVATE FUNCTIONS
 	private void SwitchRoles() {
 		SetRoles(false);
 		seducer = master;
@@ -55,7 +55,7 @@ public class GoalSetting : IMode
 	private void Seduce() {
 		LampBehaviour[] orderedLamps = OrderNonMasterLampsToDistanceFromSeducer();
 		foreach (LampBehaviour lamp  in orderedLamps) {
-			lamp.Switch(Dictionary.Flicker);
+			//lamp.Switch(Dictionary.Flicker);
 			//StartCoroutine(Wait(timeForLampToReturnToFirstState));
 		}
 		//get an array of slave lamps proportional to distance, then in an interval activate them. the deactivatian happens by the lamps adsr settings themselve

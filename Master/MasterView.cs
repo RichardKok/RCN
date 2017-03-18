@@ -8,20 +8,27 @@ public class MasterView : View<MasterApplication>
 	public float maxVisRange = 10.0f;
 	public float visRangeStart = 0.5f;
 	public int adsrStart = 25;
-	public float visualRange;
 	public float speedSensitivity = 1.0f;
+	public float visualRange;
 	public int attack;
 	public int decay;
 	public int sustain;
 	public int release;
-	public  string[] modeOptions = {Dictionary.Disabled, Dictionary.Default, Dictionary.GoalMode, Dictionary.Snooker};
+	public  string[] modeOptions;
+	
 
 	public void Awake() {
+		maxADSR = 50;
+		maxVisRange = 10.0f;
+		visRangeStart = 0.5f;
+		adsrStart = 25;
+		speedSensitivity = 1.0f;
 		visualRange = visRangeStart;
 		attack = adsrStart;
 		decay = adsrStart;
 		sustain = adsrStart;
 		release = adsrStart;
+		modeOptions = new string[]{Dictionary.Disabled, Dictionary.Default, Dictionary.GoalMode, Dictionary.Snooker};
 	}
 
 	public void ApplyTrackerChanges(){

@@ -16,7 +16,7 @@ public class MyPlayerEditor : Editor {
 	SerializedProperty sceneEnabledProp;
 	SerializedProperty speedSensitivityProp;
 	private string[] modeOptions;
-	private int modeIndex = 0;
+	private int modeIndex = 2; //Temporary testing setting
 	private float maxVisualRange;
 	private int maxADSR;
 	private float visualRangeStart;

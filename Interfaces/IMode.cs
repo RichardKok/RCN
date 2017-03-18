@@ -3,6 +3,6 @@ using System.Collections;
 
 public interface IMode 
 {
-	void UserInLampsVisualRange(int role, bool inRange);
-	void SetLightMode(int mode);
+	void OnUserTriggerChange(int role, bool inRange);
+	void OnTimerEvent(string eventPath, int target);
 }

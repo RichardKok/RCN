@@ -1,43 +1,58 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class LampBehaviour : MonoBehaviour
+public class LampBehaviour : MonoBehaviour, IListener, ISwitch 
 {
 	public LightModel Parent { set { parent = value; } }
 	private LightModel parent;
 	
+	public bool isOrdered;
 	public float VisualRange { set { visualRange = value; this.GetComponent<SphereCollider>().radius = value; } }
 	private float visualRange;
 	
-	public int SwitchSetting { set { switchSetting = value; } }
 	private int switchSetting;
 	
-	public int Role { set { role = value; }  }
+	public int Role { get; set; }
 	private int role;
 	
-	private float attack;
-	private float sustain;
-	private float decay;
-	private float release;
+	private int attack;
+	private int decay;
+	private int sustain;
+	private int release;
 	
-	public void ApplyASDR(int[] asdr){
-		attack = asdr[0];
-		sustain = asdr[1];
-		decay = asdr[2];
-		release = asdr[3];
+	public void ApplyADSR(int[] adsr) {
+		attack = adsr[0];
+		decay = adsr[1];
+		sustain = adsr[2];
+		release = adsr[3];
+	}
+	
+	public int Switch(int setting){
+		switch (setting){
+		case Dictionary.Off:
+			return decay + sustain + release;
+		case Dictionary.On:
+			return attack;
+		case Dictionary.Flicker:
+			return attack + decay + sustain + release;
+		case Dictionary.Flickering:
+			return attack + decay + sustain + release;
+		}
+		return 0;
 	}
 
 	public void OnTriggerEnter(Collider col_data) {
 		if (parent.ModeBehaviour != null && 
 			(col_data.gameObject.tag.Equals(Dictionary.User) || col_data.gameObject.tag.Equals(Dictionary.EstimatedUserPosition))) {
-			parent.ModeBehaviour.UserInLampsVisualRange(role, true);
+			parent.ModeBehaviour.OnUserTriggerChange(role, true);
 		}
 	}
 	
 	public void OnTriggerExit(Collider col_data) {
 		if (parent.ModeBehaviour != null && 
 			(col_data.gameObject.tag.Equals(Dictionary.User) || col_data.gameObject.tag.Equals(Dictionary.EstimatedUserPosition))) {
-			parent.ModeBehaviour.UserInLampsVisualRange(role, false);
+			parent.ModeBehaviour.OnUserTriggerChange(role, false);
 		}
 	}
+
 }

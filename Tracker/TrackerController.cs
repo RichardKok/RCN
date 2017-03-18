@@ -8,7 +8,7 @@ public class TrackerController : Controller<TrackerApplication>
 		switch (p_event_path) {
 		case Dictionary.TimerObserve:
 			string itemToObserve = (string)p_data[0];
-			if (itemToObserve.Equals("user")) {
+			if (itemToObserve.Equals(Dictionary.User)) {
 				app.model.addUserPosition();
 				app.Notify(Dictionary.TrackerUpdate, itemToObserve, app.model.getLastTwoUserPositions());
 			}

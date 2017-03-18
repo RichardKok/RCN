@@ -9,14 +9,15 @@ public class LightModel : Model<LightApplication>
 	public IMode ModeBehaviour { get; set; }
 	private IMode modeBehaviour;
 	
-	public void SetLampsParent() {
+	public void Start()
+	{ 
 		foreach (LampBehaviour lamp in LampScripts) lamp.Parent = this;	
 	}
-	
-	public void ApplySettingsToLamps(int[] asdr, float visualRange){
+
+	public void ApplySettingsToLamps(int[] adsr, float visualRange){
 		foreach (LampBehaviour lamp in LampScripts) {
 			lamp.VisualRange = visualRange;
-			lamp.ApplyASDR(asdr);
+			lamp.ApplyADSR(adsr);
 		}
 	}
 }

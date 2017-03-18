@@ -4,21 +4,11 @@ using System;
 
 namespace trackingRoom.util {
 	public class Util : MonoBehaviour
-	{
-		public static bool ConfirmedActions(string eventPath, params string[] callerNames) {
-			foreach (string name in callerNames)
-				if (GetPrefix(eventPath).Equals(GetPrefix(name))) return true;
-			return false;
+	{			
+		public static String GetAction(string eventPath) {
+			return eventPath.Split(new char[]{'.'})[0];
 		}
 		
-		private static string GetPrefix(string p_event_path) {
-			return p_event_path.Split(new char[]{'.'})[0];
-		}
-
-		public static string GetAction(string p_event_path) {
-			return p_event_path.Split(new char[]{'.'})[1];
-		}
-			
 		public static int Map(float x, float maxStart, float maxEnd) {
 			return Map(x, 0, maxStart, 0, maxEnd);
 		}
@@ -45,8 +35,12 @@ namespace trackingRoom.util {
 		}
 		
 		public static float Magnitude(Vector2 firstPos, Vector2 secondPos) { 
-			return new Vector2(secondPos.x - firstPos.x, 
-				secondPos.y - firstPos.y).magnitude;
+			return Magnitude(new Vector3(firstPos.x, firstPos.y, 0), new Vector3(secondPos.x, secondPos.y, 0));
+		}
+		
+		public static float Magnitude(Vector3 firstPos, Vector3 secondPos) { 
+			return new Vector3(secondPos.x - firstPos.x, 
+				secondPos.y - firstPos.y, secondPos.z - firstPos.z).magnitude;
 		}
 
 	}

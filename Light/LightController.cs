@@ -5,15 +5,17 @@ using trackingRoom.mvc;
 
 public class LightController : Controller<LightApplication>
 {
-	private bool firstCall = true;
+	//Testing purposes
+	public void Awake() {
+		app.model.ModeBehaviour = new GoalSetting(app.model.LampScripts);
+	}
 	
 	override public void OnNotification(string p_event_path, Object p_target, params object[] p_data) {		
 		switch (p_event_path) {
+		case Dictionary.TimerSeduce:
+			app.model.ModeBehaviour.OnTimerEvent(p_event_path, (int)p_data[0]);
+			break;
 		case Dictionary.MasterApplyLights:
-			if (firstCall) {
-				app.model.SetLampsParent();
-				firstCall = false;
-			}
 			int[] asdr = new int[4];
 			for (int i = 0; i < asdr.Length; i++) asdr[i] = (int)p_data[i];
 			app.model.ApplySettingsToLamps(asdr, (float)p_data[4]);
@@ -33,5 +35,4 @@ public class LightController : Controller<LightApplication>
 			break;
 		}
 	}
-
 }

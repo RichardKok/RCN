@@ -15,19 +15,20 @@ public class Dictionary : MonoBehaviour
 	public const string Disabled = "Disabled";
 	public const string Default = "Default";
 	public const string Snooker = "Snooker";
+	public const string Paint = "Paint";
 	public const string GoalMode = "GoalOrientation";
 	
-	//light modes
-	public const int Off = 0;
-	public const int On = 1;
-	public const int Flicker = 2;
-	public const int Flickering = 3;
+	//Switch Settings 
+	public const string On = "On";
+	public const string Off = "Off";
+	public const string Flicker = "Flicker";
 	
 	//ASDR options
 	public const int Attack = 0;
 	public const int Decay = 1;
 	public const int Sustain = 2;
 	public const int Release = 3;
+	public const int Finished = 4;
 	
 	//Individual lamp roles
 	public const int Slave = 0;

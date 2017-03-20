@@ -15,7 +15,7 @@ public class MasterView : View<MasterApplication>
 	public int sustain;
 	public int release;
 	public float minIntensity;
-	public float sustainIntensity;
+	public int sustainRatioOfMax;
 	public float maxIntensity;
 	public  string[] modeOptions;
 
@@ -23,7 +23,7 @@ public class MasterView : View<MasterApplication>
 		maxADSR = 50;
 		maxVisRange = 10.0f;
 		visRangeStart = 0.5f;
-		adsrStart = 25;
+		adsrStart = 4;
 		speedSensitivity = 1.0f;
 		visualRange = visRangeStart;
 		attack = adsrStart;
@@ -32,6 +32,7 @@ public class MasterView : View<MasterApplication>
 		release = adsrStart;
 		minIntensity = 0.1f;
 		maxIntensity = 10.0f;
+		sustainRatioOfMax = 75;
 		modeOptions = new string[]{Dictionary.Disabled, Dictionary.Default, Dictionary.GoalMode, Dictionary.Snooker};
 	}
 
@@ -39,8 +40,8 @@ public class MasterView : View<MasterApplication>
 		app.Notify(Dictionary.MasterApplyTracker, speedSensitivity);
 	}
 	
-	public void ApplyLightChanges(string mode, float minIntensityRefValue, float sustainIntensity, float maxIntensityRefValue) {
+	public void ApplyLightChanges(string mode, float offIntensityRefValue, float sustainRefValue, float maxIntensityRefValue) {
 		app.Notify(Dictionary.MasterApplyLights, attack, decay, sustain, release, 
-			minIntensityRefValue, sustainIntensity, maxIntensityRefValue, visualRange, mode);
+			offIntensityRefValue, sustainRefValue, maxIntensityRefValue, visualRange, mode);
 	}
 }

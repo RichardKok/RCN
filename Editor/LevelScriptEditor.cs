@@ -6,7 +6,7 @@ using UnityEngine;
 [CustomEditor(typeof(MasterView))]
 [CanEditMultipleObjects]
 public class MyPlayerEditor : Editor {
-	const int margin = 4;
+	const int margin = 2;
 	const int marginSm = 0;
 	SerializedProperty visualRangeProp;
 	SerializedProperty attackProp;
@@ -15,7 +15,8 @@ public class MyPlayerEditor : Editor {
 	SerializedProperty releaseProp;
 	SerializedProperty sceneEnabledProp;
 	SerializedProperty speedSensitivityProp;
-	private float minIntensityRefValue;
+	SerializedProperty sustainIntensityPercentageProp;
+	private float offIntensityRefValue;
 	private float maxIntensityRefValue;
 	string[] modeOptions;
 	private int modeIndex = 2; //Temporary testing setting
@@ -23,8 +24,9 @@ public class MyPlayerEditor : Editor {
 	private int maxADSR;
 	private float visualRangeStart;
 	private int adsrStart;
-	private float minIntensityLimit;
+	private float offIntensityLimit;
 	private float maxIntensityLimit;
+	private float sustainRefValue;
 	
 	void OnEnable () {
 		// Setup the SerializedProperties.
@@ -34,7 +36,7 @@ public class MyPlayerEditor : Editor {
 		sustainProp = serializedObject.FindProperty ("sustain");
 		releaseProp = serializedObject.FindProperty ("release");
 		speedSensitivityProp = serializedObject.FindProperty("speedSensitivity");
-		minIntensityLimit = serializedObject.FindProperty("minIntensity").floatValue;
+		offIntensityLimit = serializedObject.FindProperty("minIntensity").floatValue;
 		maxIntensityLimit = serializedObject.FindProperty("maxIntensity").floatValue;
 		modeOptions = ((MasterView)target).modeOptions;
 		maxVisualRange = serializedObject.FindProperty("maxVisRange").floatValue;
@@ -43,7 +45,8 @@ public class MyPlayerEditor : Editor {
 		visualRangeStart = serializedObject.FindProperty ("visRangeStart").floatValue;
 		maxADSR = serializedObject.FindProperty("maxADSR").intValue;
 		adsrStart = serializedObject.FindProperty("adsrStart").intValue;
-		minIntensityRefValue = 2.5f;
+		sustainIntensityPercentageProp = serializedObject.FindProperty("sustainRatioOfMax");             
+		offIntensityRefValue = 2.5f;
 		maxIntensityRefValue = 7.5f;
 	}
 
@@ -62,7 +65,7 @@ public class MyPlayerEditor : Editor {
 		addSpaces(marginSm);
 		createADSRGUITools();
 		addSpaces(marginSm);
-		if (GUILayout.Button("Apply settings")) ((MasterView)target).ApplyLightChanges(modeOptions[modeIndex], minIntensityRefValue, maxIntensityRefValue);
+		if (GUILayout.Button("Apply settings")) ((MasterView)target).ApplyLightChanges(modeOptions[modeIndex], offIntensityRefValue, sustainRefValue, maxIntensityRefValue);
 		serializedObject.ApplyModifiedProperties ();
 	}
 
@@ -72,7 +75,12 @@ public class MyPlayerEditor : Editor {
 	
 	public void createIntensityScalingTools() {
 		EditorGUILayout.LabelField("Light intensity scaling range [Dim - Bright]");
-		EditorGUILayout.MinMaxSlider(ref minIntensityRefValue, ref maxIntensityRefValue, minIntensityLimit, maxIntensityLimit);
+		EditorGUILayout.MinMaxSlider(ref offIntensityRefValue, ref maxIntensityRefValue, offIntensityLimit, maxIntensityLimit);
+		EditorGUILayout.IntSlider(sustainIntensityPercentageProp, 0, 100);
+		ProgressBar (offIntensityRefValue / maxIntensityLimit, "Dim Intensity " + (int)offIntensityRefValue);
+		sustainRefValue = (((float)sustainIntensityPercentageProp.intValue / 100.0f) * maxIntensityRefValue);
+		ProgressBar (sustainRefValue / maxIntensityRefValue, "SustainIntensity " + (int)sustainRefValue);
+		ProgressBar (maxIntensityRefValue / maxIntensityLimit, "Maximum Intensity " + (int)maxIntensityRefValue);
 	} 
 	
 	public void createVisualRangeTools() {

@@ -9,16 +9,22 @@ namespace trackingRoom.util {
 			return eventPath.Split(new char[]{'.'})[0];
 		}
 		
-		public static int Map(float x, float maxStart, float maxEnd) {
+		
+		public static float Map(int x, int maxStart, float maxEnd) {
+			return Map((float)x, 0.0f, (float)maxStart, 0, maxEnd);
+		}
+		
+		public static float Map(float x, float maxStart, float maxEnd) {
 			return Map(x, 0, maxStart, 0, maxEnd);
 		}
 		
-		public static int Map(float x, float minStart, float maxStart, float minEnd, float maxEnd) {
-			float mappedValue = (x - minStart) *
-				((maxEnd - minEnd) / (maxStart - minStart));
-			return (int)(mappedValue < minEnd ? minEnd 
-				: mappedValue > maxEnd ? maxEnd
-				: mappedValue);
+		public static float Map(int x, int minStart, int maxStart, float minEnd, float maxEnd) {
+			return Map((float)x, (float)minStart, (float)maxStart, minEnd, maxEnd);
+		}
+		
+		public static float Map(float x, float minStart, float maxStart, float minEnd, float maxEnd) {
+			return minEnd+ (maxEnd - minEnd) * ((x - minStart) / (maxStart - minStart)); 
+			
 		}
 	 
 		public static Vector2 EstimatedPosition(Vector2 previousPosition, Vector2 currentPosition, float scaling) {

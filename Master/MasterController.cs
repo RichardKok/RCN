@@ -11,7 +11,7 @@ public class MasterController : Controller<MasterApplication>
 		case Dictionary.TrackerUpdate:
 			string itemToTrace = (string)p_data[0];
 			KeyValuePair<Vector2, DateTime>[] lastTwoUserPositions = (KeyValuePair<Vector2, DateTime>[])p_data[1];
-			if (itemToTrace.Equals("user") && lastTwoUserPositions.Length == 2) 
+			if (itemToTrace.Equals(Dictionary.User) && lastTwoUserPositions.Length == 2) 
 				app.model.extrapolateVectors(lastTwoUserPositions);
 			break;
 		case Dictionary.MasterApplyTracker:

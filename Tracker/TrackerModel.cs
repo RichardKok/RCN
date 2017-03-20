@@ -24,7 +24,7 @@ public class TrackerModel : Model<TrackerApplication>
 		return lastPositions;
 		
 	}
-
+	
 	public void addUserPosition() {
 		addUserPosition(new Vector2(user.transform.position.x, user.transform.position.y));
 	}

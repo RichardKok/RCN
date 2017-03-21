@@ -6,27 +6,33 @@ using trackingRoom.mvc;
 public class LightController : Controller<LightApplication>
 {
 	
-	override public void OnNotification(string p_event_path, Object p_target, params object[] p_data) {		
+	override public void OnNotification (string p_event_path, Object p_target, params object[] p_data)
+	{		
 		switch (p_event_path) {
 		case Dictionary.MasterApplyLights:
-			int i = 0;
-			app.model.AttackTime = (int)p_data[i++];
-			app.model.DecayTime = (int)p_data[i++];
-			app.model.SustainTime = (int)p_data[i++];
-			app.model.ReleaseTime = (int)p_data[i++];
-			app.model.OffIntensity = (float)p_data[i++];
-			app.model.SustainIntensity = (float)p_data[i++];
-			app.model.MaxIntensity = (float)p_data[i++];
-			app.model.VisualRange = (float)p_data[i];
-			string mode = (string)p_data[p_data.Length - 1];
-			switch(mode) {
+			int attackTime = (int)p_data [0];
+			int decayTime = (int)p_data [1];
+			int sustainTime = (int)p_data [2];
+			int releaseTime = (int)p_data [3];
+			float offIntensity = (float)p_data [4];
+			float sustainIntensity = (float)p_data [5];
+			float maxIntensity = (float)p_data [6];
+			float visualRange = (float)p_data [7];
+			app.model.Attack = new ADSRSetting ("Attack", offIntensity, maxIntensity, attackTime);
+			app.model.Decay = new ADSRSetting ("Decay", maxIntensity, sustainIntensity, decayTime);
+			app.model.Sustain = new ADSRSetting ("Sustain", sustainIntensity, sustainIntensity, sustainTime);
+			app.model.Release = new ADSRSetting ("Release", sustainIntensity, offIntensity, releaseTime);
+			app.model.VisualRange = visualRange;
+			
+			string mode = (string)p_data [p_data.Length - 1];
+			switch (mode) {
 			case Dictionary.Disabled:
 				app.model.ModeBehaviour = null;
 				break;
 			case Dictionary.Default:
 				break;
 			case Dictionary.GoalMode:
-				app.model.ModeBehaviour = new GoalSetting(app.model, app.model.LampScripts);
+				app.model.ModeBehaviour = new GoalSetting (app.model, app.model.LampScripts);
 				break;
 			case Dictionary.Snooker:
 				break;
@@ -34,8 +40,9 @@ public class LightController : Controller<LightApplication>
 			break;
 		case Dictionary.TimerSeduce:
 			if (app.model.ModeBehaviour != null)
-				app.model.ModeBehaviour.OnTimerEvent(p_event_path, (int)p_data[0]);
+				app.model.ModeBehaviour.OnTimerEvent (p_event_path, (int)p_data [0]);
 			break;
 		}
 	}
 }
+

@@ -1,70 +1,71 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Switch {
-	
-	protected string name;
-	protected int steps;
-	protected int currentPhase;
+public class Switch
+{
 
-	public Switch(string name, int steps, int currentPhase) {
-		this.name = name;
-		this.steps = steps;
-		this.currentPhase = currentPhase;
-	}
-	
-	public int GetPhase() {
-		return currentPhase;
-	}
+	public string Name { get; set; }
 
-	public int GetSteps() {
-		return steps;	
-	}
+	private string name;
 
-	public int GetCurrentPhase() {
-		return currentPhase;
-	}
-	
-	virtual public void SetNextPhase() {
-		currentPhase = Dictionary.Finished;
-	}
-	
-}
-public class On : Switch{
-	
-	public On() : base(Dictionary.On, 1, Dictionary.Attack){
-		
+	public int Steps { get; set; }
+
+	private int steps;
+
+	public ADSRSetting CurrentPhase { get; set; }
+
+	private ADSRSetting currentPhase;
+
+	public Switch (string name, int steps)
+	{
+		this.Name = name;
+		this.Steps = steps;
 	}
 }
 
-public class Off : Switch{
-
-	public Off() : base(Dictionary.Off, 1, Dictionary.Release){
-		
+class On : Switch
+{
+	public On () : base ("On", 1)
+	{
 	}
 }
 
-public class Flicker : Switch{
-
-	public Flicker() : base(Dictionary.Flicker, 4, Dictionary.Attack){
-		
-	}
-
-	override public void SetNextPhase() {
-		switch (currentPhase) {
-		case Dictionary.Attack:
-			currentPhase = Dictionary.Decay;
-			break;
-		case Dictionary.Decay:
-			currentPhase = Dictionary.Sustain;
-			break;
-		case Dictionary.Sustain:
-			currentPhase = Dictionary.Release;
-			break;
-		case Dictionary.Release:
-			currentPhase = Dictionary.Finished;
-			break;
-		}
+class Off : Switch
+{
+	public Off () : base ("Off", 1)
+	{
 	}
 }
 
+class Flicker : Switch
+{
+	public Flicker () : base ("Flicker", 4)
+	{
+	}
+}
+
+public class ADSRSetting {
+
+	public string Name { get; set; }
+
+	private string name;
+
+	public float StartIntensity { get; set; }
+
+	private float startIntensity;
+
+	public float EndIntensity { get; set; }
+
+	private float endIntensity;
+
+	public int StepsToCompleteAction { get; set; }
+
+	private int stepsToCompleteAction;
+
+	public ADSRSetting(string name, float startIntensity, float endIntensity, int stepsToCompleteAction) {
+		this.Name = name;
+		this.StartIntensity = startIntensity;
+		this.EndIntensity = endIntensity;
+		this.StepsToCompleteAction = stepsToCompleteAction;
+	}
+}

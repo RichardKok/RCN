@@ -1,8 +1,8 @@
 ﻿
-namespace trackingRoom.interfaces 
+namespace trackingRoom.interfaces
 {
-	public interface IUpdatable 
+	public interface IUpdatable
 	{
-		void Update();
+		void Update ();
 	}
 }

@@ -12,11 +12,16 @@ public class Dictionary : MonoBehaviour
 	public const string MasterApplyTracker = "MasterView.applyTracker";
 	
 	//scene modes
-	public const string Disabled = "Disabled";
-	public const string Default = "Default";
-	public const string Snooker = "Snooker";
-	public const string Paint = "Paint";
+	//public const string Disabled = "Disabled";
+	public const string Test = "Test";
+	//public const string Snooker = "Snooker";
+	public const string Painter = "Painter";
 	public const string GoalMode = "GoalOrientation";
+	
+	//Flicker setttings
+	public const string Flicker = "Flicker";
+	public const string On = "On";
+	public const string Off = "Off";
 	
 	//Individual lamp roles
 	public const int Slave = 0;

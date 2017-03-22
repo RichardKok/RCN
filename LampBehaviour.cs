@@ -3,7 +3,7 @@ using trackingRoom.util;
 using trackingRoom.interfaces;
 using System.Collections;
 
-public class LampBehaviour : MonoBehaviour, IListener
+public class LampBehaviour : MonoBehaviour, IListener, ISwitch
 {
 	//PUBLIC INSTANCE VARIABLES
 	public LightModel Parent { set { parent = value; } }
@@ -61,29 +61,28 @@ public class LampBehaviour : MonoBehaviour, IListener
 
 	public IEnumerator Scale ()
 	{
-		if (SwitchSetting.CurrentPhase != null) {
+		while (SwitchSetting.CurrentPhase != null) {
 			for (int i = 0; i < SwitchSetting.Steps; i++) {
 				int ADSRSteps = SwitchSetting.CurrentPhase.StepsToCompleteAction;
 				for (int j = 0; j < ADSRSteps; j++) {
+					yield return new WaitForSeconds (parent.app.view.yieldRefreshInterval);
 					Intensity = Util.Map (j, 0, ADSRSteps, 
 						SwitchSetting.CurrentPhase.StartIntensity, SwitchSetting.CurrentPhase.EndIntensity);
-					yield return new WaitForSeconds (0.1f);
 				}
-				if (SwitchSetting.Name.Equals ("Flicker")) {
-					SwitchSetting.CurrentPhase = parent.NextPhase (SwitchSetting.CurrentPhase);
-				} else { 
-					SwitchSetting.CurrentPhase = null;
-				}
+				SwitchSetting.CurrentPhase = SwitchSetting.Name.Equals ("Flicker")
+					? parent.NextPhase (SwitchSetting.CurrentPhase) 
+					: null;
 			}
 		}
 	}
 	
-	//INTERFACE IMPLEMENTATION
+	#region IListener implementation
+	
 	public void OnTriggerEnter (Collider col_data)
 	{
 		if (parent.ModeBehaviour != null &&
 		    (col_data.gameObject.tag.Equals (Dictionary.User) || col_data.gameObject.tag.Equals (Dictionary.EstimatedUserPosition))) {
-			parent.ModeBehaviour.OnUserTriggerChange (role, true);
+			parent.ModeBehaviour.OnUserTriggerChange (this, col_data.gameObject.tag, true);
 		}
 	}
 
@@ -91,8 +90,35 @@ public class LampBehaviour : MonoBehaviour, IListener
 	{
 		if (parent.ModeBehaviour != null &&
 		    (col_data.gameObject.tag.Equals (Dictionary.User) || col_data.gameObject.tag.Equals (Dictionary.EstimatedUserPosition))) {
-			parent.ModeBehaviour.OnUserTriggerChange (role, false);
+			parent.ModeBehaviour.OnUserTriggerChange (this, col_data.gameObject.tag, false);
 		}
 	}
-
+	
+	#endregion
+	
+	#region ISwitch implementation
+	
+	public void Switch(string setting) {
+		Switch newSwitch;
+		switch (setting) {
+		case Dictionary.Flicker:
+			newSwitch = new Flicker();
+			newSwitch.CurrentPhase = parent.Attack;
+			SwitchSetting = newSwitch;
+			break;
+		case Dictionary.On:
+			newSwitch = new On();
+			newSwitch.CurrentPhase = parent.Attack;
+			SwitchSetting = newSwitch;
+			break;
+		case Dictionary.Off:
+			newSwitch = new Off();
+			newSwitch.CurrentPhase = parent.Release;
+			SwitchSetting = newSwitch;
+			break;
+		}
+	}
+	
+	#endregion
+	
 }

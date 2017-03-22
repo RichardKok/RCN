@@ -3,7 +3,7 @@ namespace trackingRoom.interfaces
 {
 	public interface IMode
 	{
-		void OnUserTriggerChange (int role, bool inRange);
+		void OnUserTriggerChange (LampBehaviour originScript, string userTag, bool inRange);
 
 		void OnTimerEvent (string eventPath, int target);
 	}

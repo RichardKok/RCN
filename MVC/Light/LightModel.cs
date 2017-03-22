@@ -7,7 +7,12 @@ using System.Collections;
 public class LightModel : Model<LightApplication>
 {
 	//PUBLIC INSTANCE VARIABLES
-	public LampBehaviour[] LampScripts { get { return (lampScripts == null) ? lampScripts = app.LampScripts : lampScripts; } }
+	public LampBehaviour[] LampScripts 
+	{
+		get { 
+			return (lampScripts == null) ? lampScripts = app.LampScripts : lampScripts; 
+		}
+	}
 
 	private LampBehaviour[] lampScripts;
 
@@ -29,7 +34,18 @@ public class LightModel : Model<LightApplication>
 
 	public ADSRSetting Release { get; set; }
 
-	private ADSRSetting release;
+	private ADSRSetting release;	
+	
+	public LampBehaviour InitSplashFromOrigin {
+		get { 
+			return initSplashWithOrigin;
+		}
+		set { 
+			initSplashWithOrigin = value; 
+			StartCoroutine(Splash(InitSplashFromOrigin));
+		} 
+	} 
+	private LampBehaviour initSplashWithOrigin;
 
 	public float VisualRange { 
 		set {
@@ -37,27 +53,12 @@ public class LightModel : Model<LightApplication>
 				lamp.VisualRange = value;
 		} 
 	}
-
-	public float refreshTimeInSeconds;
 	
 	//PUBLIC FUNCTIONS
 	public void Start ()
 	{ 
 		foreach (LampBehaviour lamp in LampScripts)
 			lamp.Parent = this;	
-	}
-	
-	//Make splash happen with a time interval between the lamps
-	public void Splash (LampBehaviour origin)
-	{		
-		LampBehaviour[] orderedLamps = OrderLampsToDistance (origin);
-		foreach (LampBehaviour lamp  in orderedLamps) { 
-			if (lamp != null) {
-				Flicker flicker = new Flicker (); 
-				flicker.CurrentPhase = Attack;
-				lamp.SwitchSetting = flicker;
-			}
-		}
 	}
 	
 	public ADSRSetting NextPhase (ADSRSetting current)
@@ -75,7 +76,7 @@ public class LightModel : Model<LightApplication>
 
 	public LampBehaviour GetRandomLamp ()
 	{
-		return GetRandomLamp (Dictionary.Slave);
+		return LampScripts [Random.Range (0, lampScripts.Length - 1)];
 	}
 
 	public LampBehaviour GetRandomLamp (int role)
@@ -83,7 +84,7 @@ public class LightModel : Model<LightApplication>
 		LampBehaviour randomLampToReturn = null;
 		bool gotLamp = false;
 		while (!gotLamp) {
-			LampBehaviour randomLamp = lampScripts [Random.Range (0, lampScripts.Length)];
+			LampBehaviour randomLamp = LampScripts [Random.Range (0, lampScripts.Length - 1)];
 			if (randomLamp.Role.Equals (role)) {
 				randomLampToReturn = randomLamp;
 				gotLamp = true;
@@ -103,6 +104,17 @@ public class LightModel : Model<LightApplication>
 	}
 
 	//PRIVATE FUNCTIONS
+	private IEnumerator Splash (LampBehaviour origin)
+	{		
+		LampBehaviour[] orderedLamps = OrderLampsToDistance (origin);
+		foreach (LampBehaviour lamp in orderedLamps) {
+			if (lamp != null) {
+				yield return new WaitForSeconds(app.view.splashInterval);
+				lamp.Switch(Dictionary.Flicker);
+			}
+		}
+	}
+
 	private LampBehaviour GetClosestUnorderedLamp (LampBehaviour originLamp)
 	{
 		float minDistance = 1000.0f; //Random high value
@@ -110,7 +122,7 @@ public class LightModel : Model<LightApplication>
 		LampBehaviour closestLamp = null;
 		foreach (LampBehaviour lamp in lampScripts) {
 			distance = Util.Magnitude (originLamp.transform.position, lamp.transform.position);
-			if (!lamp.IsOrdered && !lamp.Role.Equals (Dictionary.Seducer) && distance < minDistance) {
+			if (!lamp.IsOrdered && !lamp.Role.Equals (originLamp) && distance < minDistance) {
 				minDistance = distance;
 				closestLamp = lamp;
 				closestLamp.IsOrdered = true;

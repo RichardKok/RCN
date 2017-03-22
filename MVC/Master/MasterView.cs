@@ -34,7 +34,7 @@ public class MasterView : View<MasterApplication>
 		minIntensity = 0.1f;
 		maxIntensity = 10.0f;
 		sustainRatioOfMax = 75;
-		modeOptions = new string[]{ Dictionary.Disabled, Dictionary.Default, Dictionary.GoalMode, Dictionary.Snooker };
+		modeOptions = new string[]{ Dictionary.Test, Dictionary.Painter, Dictionary.GoalMode };
 	}
 
 	public void ApplyTrackerChanges ()

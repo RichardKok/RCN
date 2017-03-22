@@ -1,57 +1,44 @@
 ﻿using UnityEngine;
-using trackingRoom.util;
 using trackingRoom.interfaces;
-using System.Collections;
 
 public class GoalSetting : MonoBehaviour, IMode
-{
-	//PUBLIC INSTANCE VARIABLES
-	public int Active { get; set; }
-
-	private int active;
-	
+{	
 	//PRIVATE INSTANCE VARIABLES
 	private LightModel parent;
-	private LampBehaviour[] lampScripts;
 	private LampBehaviour master;
 	private LampBehaviour seducer;
 	
+	private bool splashSequenceHappening;
 	
 	//CONSTRUCTOR
-	public GoalSetting (LightModel parent, LampBehaviour[] lampScripts)
+	public GoalSetting (LightModel parent)
 	{
 		this.parent = parent;
-		this.lampScripts = lampScripts;
 		SetRoles (true);
 	}
 
 	//PUBLIC FUNCTIONS
-	//INTERFACE IMPLEMENTATION
-	public void OnUserTriggerChange (int role, bool inRange)
+	#region IMode implementation
+	
+	public void OnUserTriggerChange (LampBehaviour originScript, string userTag, bool inRange)
 	{
-		switch (role) {
-		case Dictionary.Seducer:
-			if (inRange) {
-				SwitchRoles ();
-			}
-			break;
-		}
+		if (originScript.Role == Dictionary.Slave && inRange) 
+			SwitchRoles ();
 	}
 
-	private bool splashed = false; 	//Debugging boolean to make the splash happen only once
 	public void OnTimerEvent (string eventPath, int target)
-	{
-		switch (eventPath) {
-		case Dictionary.TimerSeduce:
-			LampBehaviour origin = seducer;
-			if (origin != null && !splashed) {
-				parent.Splash (origin);
-				splashed = true;
+	{	
+		if (eventPath == Dictionary.TimerSeduce
+			&& seducer != null && !splashSequenceHappening) {
+				splashSequenceHappening = true;
+				parent.InitSplashFromOrigin = seducer;
 			}
-			break;
-		}
+			splashSequenceHappening = false;
 	}
-
+	
+	#endregion
+	
+	//PRIVATE FUNCTIONS
 	private void SwitchRoles ()
 	{
 		SetRoles (false);
@@ -63,13 +50,14 @@ public class GoalSetting : MonoBehaviour, IMode
 
 	private void SetRoles (bool hierarchy)
 	{
+		LampBehaviour[] lampScripts = parent.LampScripts;
 		foreach (LampBehaviour lamp in lampScripts)
 			lamp.Role = Dictionary.Slave;
-		if (hierarchy) {
-			master = parent.GetRandomLamp (Dictionary.Slave);
-			master.Role = Dictionary.Master;
-			seducer = parent.GetRandomLamp (Dictionary.Slave);
-			seducer.Role = Dictionary.Seducer;
-		}
+			if (hierarchy) {
+				master = parent.GetRandomLamp (Dictionary.Slave);
+				master.Role = Dictionary.Master;
+				seducer = parent.GetRandomLamp (Dictionary.Slave);
+				seducer.Role = Dictionary.Seducer;
+			}
 	}
 }

@@ -26,15 +26,14 @@ public class LightController : Controller<LightApplication>
 			
 			string mode = (string)p_data [p_data.Length - 1];
 			switch (mode) {
-			case Dictionary.Disabled:
-				app.model.ModeBehaviour = null;
+			case Dictionary.Test:
+				app.model.ModeBehaviour = new Test (app.model);
 				break;
-			case Dictionary.Default:
+			case Dictionary.Painter:
+				app.model.ModeBehaviour = new Painter (app.model);
 				break;
 			case Dictionary.GoalMode:
-				app.model.ModeBehaviour = new GoalSetting (app.model, app.model.LampScripts);
-				break;
-			case Dictionary.Snooker:
+				app.model.ModeBehaviour = new GoalSetting (app.model);
 				break;
 			}
 			break;

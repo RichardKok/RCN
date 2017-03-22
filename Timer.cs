@@ -10,7 +10,7 @@ public class Timer<T> : View<T>, IUpdatable
 
 	public int intervalInSeconds;
 
-	protected string eventPath;
+	public string eventPath;
 	protected object[] data;
 	
 	private float trigger_time;

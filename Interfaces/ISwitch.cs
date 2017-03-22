@@ -1,9 +1,5 @@
-﻿using System.Collections;
-
-namespace trackingRoom.interfaces
+﻿
+public interface ISwitch
 {
-	public interface ISwitch
-	{
-		void Switch (int setting);
-	}
+	void Switch(string setting);
 }

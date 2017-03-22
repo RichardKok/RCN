@@ -6,20 +6,19 @@ using UnityEngine;
 [CustomEditor(typeof(MasterView))]
 [CanEditMultipleObjects]
 public class MyPlayerEditor : Editor {
-	const int margin = 2;
+	const int margin = 1;
 	const int marginSm = 0;
 	SerializedProperty visualRangeProp;
 	SerializedProperty attackProp;
 	SerializedProperty decayProp;
 	SerializedProperty sustainProp;
 	SerializedProperty releaseProp;
-	SerializedProperty sceneEnabledProp;
 	SerializedProperty speedSensitivityProp;
 	SerializedProperty sustainIntensityPercentageProp;
 	private float offIntensityRefValue;
 	private float maxIntensityRefValue;
 	string[] modeOptions;
-	private int modeIndex = 2; //Temporary testing setting
+	private int modeIndex = 0; //Temporary testing setting
 	private float maxVisualRange;
 	private int maxADSR;
 	private float visualRangeStart;
@@ -77,21 +76,21 @@ public class MyPlayerEditor : Editor {
 		EditorGUILayout.LabelField("Light intensity scaling range [Dim - Bright]");
 		EditorGUILayout.MinMaxSlider(ref offIntensityRefValue, ref maxIntensityRefValue, offIntensityLimit, maxIntensityLimit);
 		EditorGUILayout.IntSlider(sustainIntensityPercentageProp, 0, 100);
-		ProgressBar (offIntensityRefValue / maxIntensityLimit, "Dim Intensity " + (int)offIntensityRefValue);
+		ProgressBar (offIntensityRefValue / maxIntensityLimit, "Dim Intensity: " + (int)offIntensityRefValue);
 		sustainRefValue = (((float)sustainIntensityPercentageProp.intValue / 100.0f) * maxIntensityRefValue);
-		ProgressBar (sustainRefValue / maxIntensityRefValue, "SustainIntensity " + (int)sustainRefValue);
-		ProgressBar (maxIntensityRefValue / maxIntensityLimit, "Maximum Intensity " + (int)maxIntensityRefValue);
+		ProgressBar (sustainRefValue / maxIntensityRefValue, "SustainIntensity: " + (int)sustainRefValue);
+		ProgressBar (maxIntensityRefValue / maxIntensityLimit, "Maximum Intensity: " + (int)maxIntensityRefValue);
 	} 
 	
 	public void createVisualRangeTools() {
 		EditorGUILayout.Slider(visualRangeProp, 0, maxVisualRange, new GUIContent ("VisualRange"));
-		ProgressBar (visualRangeProp.floatValue / (float)maxVisualRange, "Visual Range");
+		//ProgressBar (visualRangeProp.floatValue / (float)maxVisualRange, "Visual Range");
 		if (GUILayout.Button("Reset range")) visualRangeProp.floatValue = visualRangeStart;	
 	}
 	
 	public void createSpeedSensitivityTools() {
 		EditorGUILayout.Slider(speedSensitivityProp, 0, 1, new GUIContent("SpeedSensitivity"));
-		ProgressBar(speedSensitivityProp.floatValue, "Speed Sensitivity");
+		//ProgressBar(speedSensitivityProp.floatValue, "Speed Sensitivity");
 		if (GUILayout.Button("Reset sensitivity")) speedSensitivityProp.floatValue = 1;
 	}
 	
@@ -100,10 +99,10 @@ public class MyPlayerEditor : Editor {
 		EditorGUILayout.IntSlider (decayProp, 0, maxADSR, new GUIContent ("Decay"));
 		EditorGUILayout.IntSlider (sustainProp, 0, maxADSR, new GUIContent ("Sustain"));
 		EditorGUILayout.IntSlider (releaseProp, 0, maxADSR, new GUIContent ("Release"));
-		ProgressBar (attackProp.intValue / (float)maxADSR, "Attack");
-		ProgressBar (decayProp.intValue / (float)maxADSR, "Decay");
-		ProgressBar (sustainProp.intValue / (float)maxADSR, "Sustain");
-		ProgressBar (releaseProp.intValue / (float)maxADSR, "Release");
+		//ProgressBar (attackProp.intValue / (float)maxADSR, "Attack");
+		//ProgressBar (decayProp.intValue / (float)maxADSR, "Decay");
+		//ProgressBar (sustainProp.intValue / (float)maxADSR, "Sustain");
+		//ProgressBar (releaseProp.intValue / (float)maxADSR, "Release");
 		if (GUILayout.Button("Reset ASDR")) resetADSR();
 	}
 	

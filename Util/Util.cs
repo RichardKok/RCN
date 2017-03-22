@@ -18,7 +18,7 @@ namespace trackingRoom.util
 
 		public static float Map (float x, float maxStart, float maxEnd)
 		{
-			return Map (x, 0, maxStart, 0, maxEnd);
+			return Map (x, 0.0f, maxStart, 0.0f, maxEnd);
 		}
 
 		public static float Map (int x, int minStart, int maxStart, float minEnd, float maxEnd)

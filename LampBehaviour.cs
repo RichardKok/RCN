@@ -10,9 +10,16 @@ public class LampBehaviour : MonoBehaviour, IListener, ISwitch
 
 	private LightModel parent;
 
+	//PRIVATE INSTANCE VARIABLES
+	
+	private Material material;
+	
+	private Color baseColor;
+	
 	public float VisualRange {
 		set {
 			visualRange = value;
+			
 			this.GetComponent<SphereCollider> ().radius = value;
 		}
 	}
@@ -21,8 +28,11 @@ public class LampBehaviour : MonoBehaviour, IListener, ISwitch
 
 	public float Intensity {
 		set {
-			transform.localScale = new Vector3 (value, value, value);
 			intensity = value;
+			float emmission = Util.Map(intensity, SwitchSetting.CurrentPhase.EndIntensity, 1.0f);
+			Color finalColor = baseColor * Mathf.LinearToGammaSpace (emmission);
+			Debug.Log(emmission);
+			material.SetColor ("_EmissionColor",  finalColor);
 		}
 	}
 
@@ -57,6 +67,8 @@ public class LampBehaviour : MonoBehaviour, IListener, ISwitch
 	public void Awake ()
 	{
 		originalScale = this.transform.localScale;
+		material = GetComponent<Renderer>().material;
+		baseColor = Color.yellow;
 	}
 
 	public IEnumerator Scale ()

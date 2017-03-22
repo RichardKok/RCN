@@ -21,11 +21,11 @@ public class MasterView : View<MasterApplication>
 
 	public void Awake ()
 	{
-		maxADSR = 50;
+		maxADSR = 100;
 		maxVisRange = 10.0f;
 		visRangeStart = 0.5f;
-		adsrStart = 4;
-		speedSensitivity = 1.0f;
+		adsrStart = maxADSR/2;
+		speedSensitivity = 5.0f;
 		visualRange = visRangeStart;
 		attack = adsrStart;
 		decay = adsrStart;

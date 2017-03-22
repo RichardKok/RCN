@@ -83,7 +83,7 @@ public class MyPlayerEditor : Editor {
 	} 
 	
 	public void createVisualRangeTools() {
-		EditorGUILayout.Slider(visualRangeProp, 0, maxVisualRange, new GUIContent ("VisualRange"));
+		EditorGUILayout.Slider(visualRangeProp, 0, maxVisualRange, new GUIContent ("VisualRange scaling"));
 		//ProgressBar (visualRangeProp.floatValue / (float)maxVisualRange, "Visual Range");
 		if (GUILayout.Button("Reset range")) visualRangeProp.floatValue = visualRangeStart;	
 	}

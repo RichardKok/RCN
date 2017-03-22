@@ -89,7 +89,7 @@ public class MyPlayerEditor : Editor {
 	}
 	
 	public void createSpeedSensitivityTools() {
-		EditorGUILayout.Slider(speedSensitivityProp, 0, 1, new GUIContent("SpeedSensitivity"));
+		EditorGUILayout.Slider(speedSensitivityProp, 0, 10, new GUIContent("SpeedSensitivity"));
 		//ProgressBar(speedSensitivityProp.floatValue, "Speed Sensitivity");
 		if (GUILayout.Button("Reset sensitivity")) speedSensitivityProp.floatValue = 1;
 	}

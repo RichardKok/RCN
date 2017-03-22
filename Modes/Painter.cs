@@ -17,7 +17,6 @@ public class Painter : MonoBehaviour, IMode
 	{
 		if (userTag.Equals(Dictionary.EstimatedUserPosition) && inRange) 
 			originScript.Switch(Dictionary.Flicker);
-		
 	}
 
 	public void OnTimerEvent (string eventPath, int target)

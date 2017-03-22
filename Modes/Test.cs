@@ -9,10 +9,9 @@ public class Test : MonoBehaviour, IMode
 	public Test(LightModel parent) {
 		this.parent = parent;
 		foreach (LampBehaviour lamp in parent.LampScripts) {
-			bool allOn = parent.app.view.testAllLightsOn;
-			lamp.SwitchSetting = (parent.app.view.testAllLightsOn)
-				? (Switch)new On()
-				: (Switch)new Off();
+			lamp.Switch((parent.app.view.testAllLightsOn)
+				? Dictionary.On
+				: Dictionary.Off);
 		}
 	}
 

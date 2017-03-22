@@ -8,7 +8,7 @@ public class Timer<T> : View<T>, IUpdatable
 {
 	new public T app { get { return (T)base.app; } }
 
-	public int intervalInSeconds;
+	public float intervalInSeconds;
 
 	public string eventPath;
 	protected object[] data;
@@ -31,7 +31,7 @@ public class Timer<T> : View<T>, IUpdatable
 
 	private void UpdateTrigger ()
 	{
-		trigger_time += (float)intervalInSeconds;
+		trigger_time += intervalInSeconds;
 	}
 
 }

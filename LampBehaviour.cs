@@ -1,20 +1,21 @@
 ﻿using UnityEngine;
 using trackingRoom.util;
 using System.Collections;
+using System;
 
 public class LampBehaviour : MonoBehaviour
 {
 	//PUBLIC INSTANCE VARIABLES
 	public Switch SwitchSetting { get { return switchSetting; } 
-		set { switchSetting = value; StartCoroutine (Scale ()); } }
+		set { switchSetting = value; StartCoroutine (Scale ()); } } 
 	
 	private Switch switchSetting;
-	public float Intensity { 
-		set { 
-			Debug.Log("Switchsetting " + SwitchSetting + " value" + value);
-			DynamicGI.SetEmissive(renderer, color * value);
+	public float Intensity {  get { return intensity; }
+		set { intensity = value; Debug.Log("Switchsetting " + SwitchSetting + " value" + intensity);
+			  DynamicGI.SetEmissive(renderer, color * intensity);
 		} 
 	}
+	private float intensity;
 	
 	public int Role { get; set; }
 	private int role;
@@ -26,7 +27,7 @@ public class LampBehaviour : MonoBehaviour
 	
 	//PRIVATE INSTANCE VARIABLES
 	private Material material;
-	private Renderer renderer;
+	private new Renderer renderer;
 	private Color baseColor;
 	private GameObject user;
 	private GameObject goal;
@@ -52,34 +53,31 @@ public class LampBehaviour : MonoBehaviour
 	
 	public void CheckUserProximity ()
 	{
-		if ((SwitchSetting == null || SwitchSetting.Name.Equals(Dictionary.Off)) && Vector3.Distance(ThisPos,UserPos) <= VisualRange) {
+		if ((SwitchSetting == null || SwitchSetting.Name.Equals(Dictionary.Off)) && Vector3.Distance(ThisPos, UserPos) <= VisualRange) {
 			Switch onSwitch = new On();
 			onSwitch.CurrentPhase = Parent.attack;
 			SwitchSetting = onSwitch;
-		} else if (SwitchSetting != null && SwitchSetting.Name.Equals(Dictionary.On) && Vector3.Distance(ThisPos,UserPos) > VisualRange){
+		} else if (SwitchSetting != null && SwitchSetting.Name.Equals(Dictionary.On) && Vector3.Distance(ThisPos, UserPos) > VisualRange){
 			Switch onSwitch = new Off();
 			onSwitch.CurrentPhase = Parent.release;
 			SwitchSetting = onSwitch;
 		}
 	}
 	
-	//catch Nullpointer exception
-	public IEnumerator Scale () 
+	public IEnumerator Scale ()  
 	{
-		while (SwitchSetting.CurrentPhase != null) {
+		while (Intensity <= SwitchSetting.CurrentPhase.StartIntensity) {
 			for (int i = 0; i < SwitchSetting.Steps; i++) {
 				int ADSRSteps = SwitchSetting.CurrentPhase.StepsToCompleteAction;
 				for (int j = 0; j < ADSRSteps; j++) {
 					yield return new WaitForSeconds (0.01f);
-					float intensity = Util.Map ((float)j, 0.0f, (float)ADSRSteps, 
+					try {
+						Intensity = Util.Map ((float)j, 0.0f, (float)ADSRSteps, 
 						SwitchSetting.CurrentPhase.StartIntensity, SwitchSetting.CurrentPhase.EndIntensity);
-					this.Intensity = intensity;
+					} catch (Exception) { }
 				}
-				SwitchSetting.CurrentPhase = SwitchSetting.Name.Equals ("Flicker")
-					? parent.NextPhase (SwitchSetting.CurrentPhase) 
-					: null;
+
 			}
 		}
-	}
-		
+	}	
 }

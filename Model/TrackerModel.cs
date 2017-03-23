@@ -24,8 +24,10 @@ public class TrackerModel : Model<TrackerApplication>
 		} 
 		return null;
 	}
-	
+
 	public void addUserPosition() {
 		positionsMappedToDate.Add(new KeyValuePair<Vector3, DateTime>(user.transform.position, DateTime.Now));
 	}
 }
+
+

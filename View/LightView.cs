@@ -5,8 +5,8 @@ using trackingRoom.mvc;
 public class LightView : View<LightApplication>
 {
 	public int visualRange;
-	public int dimIntensity;
-	public int brightIntensity;
+	public float minEmission;
+	public float maxEmission;
 	public int attackDuration;
 	public int releaseDuration;
 }

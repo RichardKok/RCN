@@ -11,9 +11,8 @@ public class LampBehaviour : MonoBehaviour
 	private Switch switchSetting;
 	public float Intensity { 
 		set { 
-			DynamicGI.SetEmissive(renderer, new Color(1f, 0.1f, 0.5f, 1.0f) * Mathf.PingPong(value, 1.0f)); 
-			Debug.Log("Intensity changed");
-			
+			Debug.Log("Switchsetting " + SwitchSetting + " value" + value);
+			DynamicGI.SetEmissive(renderer, color * value);
 		} 
 	}
 	
@@ -57,25 +56,22 @@ public class LampBehaviour : MonoBehaviour
 			Switch onSwitch = new On();
 			onSwitch.CurrentPhase = Parent.attack;
 			SwitchSetting = onSwitch;
-			Debug.Log("Setting lamp on");
-		} else if (SwitchSetting.Name.Equals(Dictionary.On) && Vector3.Distance(ThisPos,UserPos) > VisualRange){
+		} else if (SwitchSetting != null && SwitchSetting.Name.Equals(Dictionary.On) && Vector3.Distance(ThisPos,UserPos) > VisualRange){
 			Switch onSwitch = new Off();
 			onSwitch.CurrentPhase = Parent.release;
 			SwitchSetting = onSwitch;
-			Debug.Log("Setting lamp off");
 		}
-		
 	}
 	
-	public IEnumerator Scale ()
+	//catch Nullpointer exception
+	public IEnumerator Scale () 
 	{
 		while (SwitchSetting.CurrentPhase != null) {
 			for (int i = 0; i < SwitchSetting.Steps; i++) {
 				int ADSRSteps = SwitchSetting.CurrentPhase.StepsToCompleteAction;
-				Debug.Log("scaling with " + SwitchSetting.Name + "+ ADSRSteps " + ADSRSteps);
 				for (int j = 0; j < ADSRSteps; j++) {
 					yield return new WaitForSeconds (0.01f);
-					float intensity = Util.Map (j, 0, ADSRSteps, 
+					float intensity = Util.Map ((float)j, 0.0f, (float)ADSRSteps, 
 						SwitchSetting.CurrentPhase.StartIntensity, SwitchSetting.CurrentPhase.EndIntensity);
 					this.Intensity = intensity;
 				}

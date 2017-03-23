@@ -16,8 +16,8 @@ public class LightModel : Model<LightApplication>
 	public Vector3 GoalPos { get; set; }  //set in controller
 	private Vector3 goalPos;
 	
-	public int DimIntensity { get { return app.view.dimIntensity; } }
-	public int BrightIntensity { get { return app.view.brightIntensity; } }
+	public float MinEmission { get { return app.view.minEmission; } }
+	public float MaxEmission { get { return app.view.maxEmission; } }
 	public int VisualRange { get { return app.view.visualRange; } }
 	public int AttackDuration { get { return app.view.attackDuration; } }
 	public int ReleaseDuration { get { return app.view.releaseDuration; } }
@@ -31,9 +31,9 @@ public class LightModel : Model<LightApplication>
 		foreach (LampBehaviour lamp in LampScripts) {
 			lamp.Parent = this;
 		}
-		attack = new ADSRSetting("attack", DimIntensity, BrightIntensity, AttackDuration);
-		sustain = new ADSRSetting("sustain", BrightIntensity, BrightIntensity, 1);
-		release = new ADSRSetting("release", BrightIntensity, DimIntensity, ReleaseDuration);
+		attack = new ADSRSetting("attack", MinEmission, MaxEmission, AttackDuration);
+		sustain = new ADSRSetting("sustain", MaxEmission, MaxEmission, 1);
+		release = new ADSRSetting("release", MaxEmission, MinEmission, ReleaseDuration);
 	}
 	
 	public LampBehaviour InitSplashFromOrigin {

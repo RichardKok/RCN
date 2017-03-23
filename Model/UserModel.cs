@@ -27,15 +27,15 @@ public class UserModel : Model<UserApplication>
 	
 	public void Update() {
 		if (Pos != PrevPos) {
-		vel = SubtractedVector(Pos, PrevPos);
-		GoalPos = AddedVector(Pos, vel);
-		acc = SubtractedVector(vel, prevVel);
-		nextVel = AddedVector(nextVel, acc);
-		prevVel = vel;
-		nextVel = AddedVector(nextVel, acc);
-		nextVel.Scale(new Vector3(Push, Push, Push));
-		nextUser.transform.position = AddedVector(nextUser.transform.position, nextVel);
-		GoalPos = nextUser.transform.position;
+			vel = SubtractedVector(Pos, PrevPos);
+			GoalPos = AddedVector(Pos, vel);
+			acc = SubtractedVector(vel, prevVel);
+			nextVel = AddedVector(nextVel, acc);
+			prevVel = vel;
+			nextVel = AddedVector(nextVel, acc);
+			nextVel.Scale(new Vector3(Push, Push, Push));
+			nextUser.transform.position = AddedVector(nextUser.transform.position, nextVel);
+			GoalPos = nextUser.transform.position;
 		}
 		Vector3 returnVel = SubtractedVector(user.transform.position, nextUser.transform.position);		
 		returnVel.Scale(new Vector3(Pull, Pull, Pull));

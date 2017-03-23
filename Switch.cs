@@ -50,19 +50,19 @@ public class ADSRSetting {
 
 	private string name;
 
-	public float StartIntensity { get; set; }
+	public int StartIntensity { get; set; }
 
-	private float startIntensity;
+	private int startIntensity;
 
-	public float EndIntensity { get; set; }
+	public int EndIntensity { get; set; }
 
-	private float endIntensity;
+	private int endIntensity;
 
 	public int StepsToCompleteAction { get; set; }
 
 	private int stepsToCompleteAction;
 
-	public ADSRSetting(string name, float startIntensity, float endIntensity, int stepsToCompleteAction) {
+	public ADSRSetting(string name, int startIntensity, int endIntensity, int stepsToCompleteAction) {
 		this.Name = name;
 		this.StartIntensity = startIntensity;
 		this.EndIntensity = endIntensity;

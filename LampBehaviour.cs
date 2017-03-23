@@ -5,10 +5,17 @@ using System.Collections;
 public class LampBehaviour : MonoBehaviour
 {
 	//PUBLIC INSTANCE VARIABLES
-	public Switch SwitchSetting { get { return switchSetting; } set { switchSetting = value; StartCoroutine (Scale ()); } }
-	private Switch switchSetting;
+	public Switch SwitchSetting { get { return switchSetting; } 
+		set { switchSetting = value; StartCoroutine (Scale ()); } }
 	
-	public float Intensity { set { DynamicGI.SetEmissive(renderer, new Color(1f, 0.1f, 0.5f, 1.0f) * value); } }
+	private Switch switchSetting;
+	public float Intensity { 
+		set { 
+			DynamicGI.SetEmissive(renderer, new Color(1f, 0.1f, 0.5f, 1.0f) * Mathf.PingPong(value, 1.0f)); 
+			Debug.Log("Intensity changed");
+			
+		} 
+	}
 	
 	public int Role { get; set; }
 	private int role;
@@ -17,7 +24,6 @@ public class LampBehaviour : MonoBehaviour
 	
 	public LightModel Parent { get; set; } 
 	private LightModel parent;
-	
 	
 	//PRIVATE INSTANCE VARIABLES
 	private Material material;
@@ -31,7 +37,6 @@ public class LampBehaviour : MonoBehaviour
 	private Vector3 PrevUserPos { get { return Parent.PrevPos; } }
 	private Vector3 UserPos { get { return Parent.Pos;} }
 	private Vector3 UserGoalPos{ get { return Parent.GoalPos; } }
-	private int adsrPhase;
 	private Color color;
 	
 	//PUBLIC FUNCTIONS
@@ -49,11 +54,15 @@ public class LampBehaviour : MonoBehaviour
 	public void CheckUserProximity ()
 	{
 		if ((SwitchSetting == null || SwitchSetting.Name.Equals(Dictionary.Off)) && Vector3.Distance(ThisPos,UserPos) <= VisualRange) {
-			SwitchSetting = new On();
-			SwitchSetting.CurrentPhase = Parent.attack;
+			Switch onSwitch = new On();
+			onSwitch.CurrentPhase = Parent.attack;
+			SwitchSetting = onSwitch;
+			Debug.Log("Setting lamp on");
 		} else if (SwitchSetting.Name.Equals(Dictionary.On) && Vector3.Distance(ThisPos,UserPos) > VisualRange){
-			SwitchSetting = new Off();
-			SwitchSetting.CurrentPhase = Parent.release;
+			Switch onSwitch = new Off();
+			onSwitch.CurrentPhase = Parent.release;
+			SwitchSetting = onSwitch;
+			Debug.Log("Setting lamp off");
 		}
 		
 	}
@@ -63,10 +72,12 @@ public class LampBehaviour : MonoBehaviour
 		while (SwitchSetting.CurrentPhase != null) {
 			for (int i = 0; i < SwitchSetting.Steps; i++) {
 				int ADSRSteps = SwitchSetting.CurrentPhase.StepsToCompleteAction;
+				Debug.Log("scaling with " + SwitchSetting.Name + "+ ADSRSteps " + ADSRSteps);
 				for (int j = 0; j < ADSRSteps; j++) {
-					yield return new WaitForSeconds (parent.app.view.intensityRefresh);
-					Intensity = Util.Map (j, 0, ADSRSteps, 
+					yield return new WaitForSeconds (0.01f);
+					float intensity = Util.Map (j, 0, ADSRSteps, 
 						SwitchSetting.CurrentPhase.StartIntensity, SwitchSetting.CurrentPhase.EndIntensity);
+					this.Intensity = intensity;
 				}
 				SwitchSetting.CurrentPhase = SwitchSetting.Name.Equals ("Flicker")
 					? parent.NextPhase (SwitchSetting.CurrentPhase) 

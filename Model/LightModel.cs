@@ -16,8 +16,8 @@ public class LightModel : Model<LightApplication>
 	public Vector3 GoalPos { get; set; }  //set in controller
 	private Vector3 goalPos;
 	
-	public float DimIntensity { get { return (float)app.view.dimIntensity / 100.0f; } }
-	public float BrightIntensity { get { return (float)app.view.brightIntensity / 100.0f; } }
+	public int DimIntensity { get { return app.view.dimIntensity; } }
+	public int BrightIntensity { get { return app.view.brightIntensity; } }
 	public int VisualRange { get { return app.view.visualRange; } }
 	public int AttackDuration { get { return app.view.attackDuration; } }
 	public int ReleaseDuration { get { return app.view.releaseDuration; } }
@@ -89,7 +89,7 @@ public class LightModel : Model<LightApplication>
 		foreach (LampBehaviour lamp in orderedLamps) {
 			if (lamp != null) {
 				yield return new WaitForSeconds(4);
-				lamp.Switch(Dictionary.Flicker);
+				//flicker lamp
 			}
 		}
 	}

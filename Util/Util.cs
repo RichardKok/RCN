@@ -31,12 +31,6 @@ namespace trackingRoom.util
 			return minEnd + (maxEnd - minEnd) * ((x - minStart) / (maxStart - minStart)); 
 		}
 
-		public static Vector2 EstimatedPosition (Vector2 previousPosition, Vector2 currentPosition, float scaling)
-		{
-			return new Vector2 (currentPosition.x + (currentPosition.x - previousPosition.x) * scaling,
-				currentPosition.y + (currentPosition.y - previousPosition.y) * scaling);
-		}
-
 		public static float Speed (Vector2 prevPos, Vector2 curPos, DateTime prevDateTime, DateTime curDateTime)
 		{
 			return Speed (Magnitude (prevPos, curPos), curDateTime.Second - prevDateTime.Second);

@@ -7,6 +7,7 @@ public class Dictionary : MonoBehaviour
 	public const string TimerSeduce = "Timer.seduce";
 	public const string TimerObserve = "Timer.observe";
 	public const string TrackerUpdate = "TrackerController.updatePosition";
+	public const string UserUpdate = "UserController.updatePosition";
 	public const string MasterActivate = "MasterView.activateLights";
 	public const string MasterApplyLights = "MasterView.applyLights";
 	public const string MasterApplyTracker = "MasterView.applyTracker";

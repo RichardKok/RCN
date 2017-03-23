@@ -11,19 +11,8 @@ public class Painter : MonoBehaviour, IMode
 		this.parent = parent;
 	}
 	
-	#region IMode implementation
-	
-	public void OnUserTriggerChange (LampBehaviour originScript, string userTag, bool inRange)
+	public void OnUserDetection ()
 	{
-		if (userTag.Equals(Dictionary.EstimatedUserPosition) && inRange) 
-			originScript.Switch(Dictionary.Flicker);
 	}
-
-	public void OnTimerEvent (string eventPath, int target)
-	{
-
-	}
-
-	#endregion
 
 }

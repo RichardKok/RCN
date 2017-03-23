@@ -18,25 +18,24 @@ public class GoalSetting : MonoBehaviour, IMode
 	}
 
 	//PUBLIC FUNCTIONS
-	#region IMode implementation
-	
 	public void OnUserTriggerChange (LampBehaviour originScript, string userTag, bool inRange)
 	{
 		if (originScript.Role == Dictionary.Slave && inRange) 
 			SwitchRoles ();
 	}
 
-	public void OnTimerEvent (string eventPath, int target)
-	{	
-		if (eventPath == Dictionary.TimerSeduce
-			&& seducer != null && !splashSequenceHappening) {
-				splashSequenceHappening = true;
-				parent.InitSplashFromOrigin = seducer;
-			}
-			splashSequenceHappening = false;
+	public void OnUserDetection ()
+	{
 	}
 	
-	#endregion
+	public void Splash()
+	{	
+		if (seducer != null && !splashSequenceHappening) {
+			splashSequenceHappening = true;
+			parent.InitSplashFromOrigin = seducer;
+		}
+		splashSequenceHappening = false;
+	}
 	
 	//PRIVATE FUNCTIONS
 	private void SwitchRoles ()

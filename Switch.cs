@@ -4,15 +4,15 @@ using System.Collections;
 public class Switch
 {
 
-	public string Name { get; set; }
+	public string Name { get { return name; }  set { name = value; } }
 
 	private string name;
 
-	public int Steps { get; set; }
+	public int Steps { get { return steps; }  set { steps = value; } }
 
 	private int steps;
 
-	public ADSRSetting CurrentPhase { get; set; }
+	public ADSRSetting CurrentPhase { get { return currentPhase; }  set { currentPhase = value; } }
 
 	private ADSRSetting currentPhase;
 

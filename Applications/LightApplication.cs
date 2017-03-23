@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
-using System.Collections;
 using trackingRoom.mvc;
+using System.Collections.Generic;
+using System;
 
 public class LightApplication : BaseApplication<LightModel, LightView, LightController>
 {
@@ -8,3 +9,4 @@ public class LightApplication : BaseApplication<LightModel, LightView, LightCont
 
 	private LampBehaviour[] lampScripts;
 }
+

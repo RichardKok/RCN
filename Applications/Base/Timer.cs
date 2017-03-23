@@ -3,12 +3,12 @@ using System.Collections;
 using trackingRoom.mvc;
 using trackingRoom.interfaces;
 
-public class Timer<T> : View<T>, IUpdatable
+public class Timer<T> : View<T>
 	where T : BaseApplication
 {
 	new public T app { get { return (T)base.app; } }
 
-	public float intervalInSeconds;
+	public float intervalInSeconds = 1;
 
 	public string eventPath;
 	protected object[] data;

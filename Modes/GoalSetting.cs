@@ -4,11 +4,11 @@ using trackingRoom.interfaces;
 public class GoalSetting : MonoBehaviour, IMode
 {	
 	//PRIVATE INSTANCE VARIABLES
-	private LightModel parent;
-	private LampBehaviour master;
-	private LampBehaviour seducer;
+	LightModel parent;
+	LampBehaviour master;
+	LampBehaviour seducer;
 	
-	private bool splashSequenceHappening;
+	bool splashSequenceHappening;
 	
 	//CONSTRUCTOR
 	public GoalSetting (LightModel parent)
@@ -18,15 +18,15 @@ public class GoalSetting : MonoBehaviour, IMode
 	}
 
 	//PUBLIC FUNCTIONS
-	public void OnUserTriggerChange (LampBehaviour originScript, string userTag, bool inRange)
+	#region IMode implementation
+	
+	public void OnUserDetectionChange (LampBehaviour originScript, string userTag, bool inRange)
 	{
 		if (originScript.Role == Dictionary.Slave && inRange) 
 			SwitchRoles ();
 	}
 
-	public void OnUserDetection ()
-	{
-	}
+	#endregion
 	
 	public void Splash()
 	{	
@@ -38,7 +38,7 @@ public class GoalSetting : MonoBehaviour, IMode
 	}
 	
 	//PRIVATE FUNCTIONS
-	private void SwitchRoles ()
+	void SwitchRoles ()
 	{
 		SetRoles (false);
 		seducer = master;
@@ -47,7 +47,7 @@ public class GoalSetting : MonoBehaviour, IMode
 		master.Role = Dictionary.Master;
 	}
 
-	private void SetRoles (bool hierarchy)
+	void SetRoles (bool hierarchy)
 	{
 		LampBehaviour[] lampScripts = parent.LampScripts;
 		foreach (LampBehaviour lamp in lampScripts)

@@ -43,7 +43,7 @@ public class LightModel : Model<LightApplication>
 		} 
 	} 
 	
-	public ADSRSetting NextPhase (ADSRSetting current)
+	public ADSRSetting NextADSRPhase (ADSRSetting current)
 	{
 		switch (current.Name) {
 		case "Attack":
@@ -84,7 +84,7 @@ public class LightModel : Model<LightApplication>
 	}
 
 	//PRIVATE FUNCTIONS
-	private IEnumerator Splash (LampBehaviour origin)
+	IEnumerator Splash (LampBehaviour origin)
 	{		
 		LampBehaviour[] orderedLamps = OrderLampsToDistance (origin);
 		foreach (LampBehaviour lamp in orderedLamps) {
@@ -95,7 +95,7 @@ public class LightModel : Model<LightApplication>
 		}
 	}
 
-	private LampBehaviour GetClosestUnorderedLamp (LampBehaviour originLamp)
+     LampBehaviour GetClosestUnorderedLamp (LampBehaviour originLamp)
 	{
 		float minDistance = 1000.0f; //Random high value
 		float distance;

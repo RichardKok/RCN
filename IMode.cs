@@ -4,7 +4,7 @@ using System.Collections;
 namespace trackingRoom.interfaces {
 	public interface IMode 
 	{
-		void OnUserDetection();
+		void OnUserDetectionChange (LampBehaviour originScript, string userTag, bool inRange);
 	
 	}
 }

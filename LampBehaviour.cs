@@ -10,7 +10,7 @@ public class LampBehaviour : MonoBehaviour
 		get { return switchSetting; } 
 		set { switchSetting = value;
 			StartCoroutine (Scale ()); } } 	
-	private Switch switchSetting;
+	Switch switchSetting;
 	
 	public float Intensity {  
 		get { return intensity; }
@@ -20,29 +20,29 @@ public class LampBehaviour : MonoBehaviour
 			Color final = color * Mathf.LinearToGammaSpace(value);
 			renderer.material.SetColor("_EmissionColor", final); 
 			DynamicGI.SetEmissive(renderer, final); } }
-	private float intensity;
+	float intensity;
 	
 	public int Role { get; set; }
-	private int role;
+	int role;
 	public bool IsOrdered { get; set; }
-	private bool isOrdered;
+	bool isOrdered;
 	
 	public LightModel Parent { get; set; } 
-	private LightModel parent;
+	LightModel parent;
 	
 	//PRIVATE INSTANCE VARIABLES
-	private Material material;
-	private new Renderer renderer;
-	private Color baseColor;
+	Material material;
+	new Renderer renderer;
+	Color baseColor;
 
-	private ADSRSetting Attack { get { return Parent.attack; } }
-	private ADSRSetting  Release { get { return Parent.release; } }
-	private float VisualRange {	get { return Parent.VisualRange; } }
-	private Vector3 ThisPos { get { return transform.position; } }
-	private Vector3 PrevUserPos { get { return Parent.PrevPos; } }
-	private Vector3 UserPos { get { return Parent.Pos;} }
-	private Vector3 UserGoalPos{ get { return Parent.GoalPos; } }
-	private Color color;
+	ADSRSetting Attack { get { return Parent.attack; } }
+	ADSRSetting  Release { get { return Parent.release; } }
+	float VisualRange {	get { return Parent.VisualRange; } }
+	Vector3 ThisPos { get { return transform.position; } }
+	Vector3 PrevUserPos { get { return Parent.PrevPos; } }
+	Vector3 UserPos { get { return Parent.Pos;} }
+	Vector3 UserGoalPos{ get { return Parent.GoalPos; } }
+	Color color;
 	
 	//PUBLIC FUNCTIONS
 	public void Awake ()
@@ -53,21 +53,23 @@ public class LampBehaviour : MonoBehaviour
 	}
 	
 	public void Update() {
-		if (InReach(UserPos)) TurnLampOn();
-		else if (OutOfReach(UserPos)) TurnLampOff();
+		if (Parent != null) {
+			if (InReach(UserPos)) TurnLampOn();
+			else if (OutOfReach(UserPos)) TurnLampOff();
+		}
 	}
 	
-	public bool InReach(Vector3 position) {
+	bool InReach(Vector3 position) {
 		return ((SwitchSetting == null || SwitchSetting.Name.Equals(Dictionary.Off))
 			&& Vector3.Distance(ThisPos, position) <= VisualRange);
 	}
 	
-	public bool OutOfReach(Vector3 position) {
+	bool OutOfReach(Vector3 position) {
 		return ((SwitchSetting != null &&  SwitchSetting.Name.Equals(Dictionary.On)) 
 			&& Vector3.Distance(ThisPos, position) > VisualRange);
 	}
 	
-	public void TurnLampOn() {
+	void TurnLampOn() {
 		Switch onSwitch = new On();
 		onSwitch.CurrentPhase = Attack;
 		onSwitch.CurrentPhase.StartIntensity = Intensity;
@@ -75,7 +77,7 @@ public class LampBehaviour : MonoBehaviour
 		Debug.Log("Switching on ");
 	}
 	
-	public void TurnLampOff() {
+	void TurnLampOff() {
 		Switch onSwitch = new Off();
 		onSwitch.CurrentPhase = Release;
 		onSwitch.CurrentPhase.StartIntensity = Intensity;

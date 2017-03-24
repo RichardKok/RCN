@@ -4,13 +4,14 @@ using trackingRoom.interfaces;
 
 public class Test : MonoBehaviour, IMode
 {
-	private LightModel parent;
+	LightModel parent;
 	
 	public Test(LightModel parent) {
 		this.parent = parent;
 	}
 	
-	public void OnUserDetection ()
-	{
+	public void OnUserDetectionChange (LampBehaviour originScript, string userTag, bool inRange){
+
+
 	}
 }

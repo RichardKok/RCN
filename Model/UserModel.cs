@@ -4,21 +4,21 @@ using trackingRoom.mvc;
 public class UserModel : Model<UserApplication>
 {
 
-	private GameObject nextUser;
-	private GameObject user;  
+	GameObject nextUser;
+	GameObject user;  
 	
 	public Vector3 PrevPos { get; set; } //set in controller
 	public Vector3 Pos { get; set; }  //set in controller
 	public Vector3 GoalPos { get; set; }
-	private float Push { get { return (float)app.view.nextPosPush / 100.0f; } }
-	private float Pull { get { return (float)app.view.nextPosPull / 100.0f; } }
+	float Push { get { return (float)app.view.nextPosPush / 100.0f; } }
+	float Pull { get { return (float)app.view.nextPosPull / 100.0f; } }
 	
-	private Vector3 prevPos;
-	private Vector3 pos;
-	private Vector3 prevVel;
-	private Vector3 vel;
-	private Vector3 nextVel;
-	private Vector3 acc;
+	Vector3 prevPos;
+	Vector3 pos;
+	Vector3 prevVel;
+	Vector3 vel;
+	Vector3 nextVel;
+	Vector3 acc;
 	
 	public void Awake() {
 		nextUser = GameObject.FindGameObjectWithTag (Dictionary.EstimatedUserPosition); 
@@ -42,11 +42,11 @@ public class UserModel : Model<UserApplication>
 		nextUser.transform.position = AddedVector(nextUser.transform.position, returnVel);
 	}
 	
-	public Vector3 SubtractedVector(Vector3 vec1, Vector3 vec2) {
+	 Vector3 SubtractedVector(Vector3 vec1, Vector3 vec2) {
 		return new Vector3(vec1.x - vec2.x, vec1.y - vec2.y, vec1.z - vec2.z);
 	}
 	
-	public Vector3 AddedVector(Vector3 vec1, Vector3 vec2) {
+     Vector3 AddedVector(Vector3 vec1, Vector3 vec2) {
 		return new Vector3(vec1.x + vec2.x, vec1.y + vec2.y, vec1.z + vec2.z);
 	}
 }

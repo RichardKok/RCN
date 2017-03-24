@@ -13,7 +13,7 @@ public class Timer<T> : View<T>
 	public string eventPath;
 	protected object[] data;
 	
-	private float trigger_time;
+	float trigger_time;
 
 	public void Awake ()
 	{
@@ -29,7 +29,7 @@ public class Timer<T> : View<T>
 		}
 	}
 
-	private void UpdateTrigger ()
+	void UpdateTrigger ()
 	{
 		trigger_time += intervalInSeconds;
 	}

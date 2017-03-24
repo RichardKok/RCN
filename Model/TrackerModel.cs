@@ -5,9 +5,9 @@ using trackingRoom.mvc;
 
 public class TrackerModel : Model<TrackerApplication>
 {
-	private GameObject user;
-	private List<KeyValuePair<Vector3, DateTime>> positionsMappedToDate;
-	private KeyValuePair<Vector3, DateTime>[] lastPositions;
+	GameObject user;
+	List<KeyValuePair<Vector3, DateTime>> positionsMappedToDate;
+	KeyValuePair<Vector3, DateTime>[] lastPositions;
 	
 	public void Awake() {
 		user = GameObject.FindGameObjectWithTag("User");

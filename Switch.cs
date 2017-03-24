@@ -6,15 +6,15 @@ public class Switch
 
 	public string Name { get { return name; }  set { name = value; } }
 
-	private string name;
+	string name;
 
 	public int Steps { get { return steps; }  set { steps = value; } }
 
-	private int steps;
+	int steps;
 
 	public ADSRSetting CurrentPhase { get { return currentPhase; }  set { currentPhase = value; } }
 
-	private ADSRSetting currentPhase;
+	ADSRSetting currentPhase;
 
 	public Switch (string name, int steps)
 	{
@@ -48,19 +48,19 @@ public class ADSRSetting {
 
 	public string Name { get; set; }
 
-	private string name;
+	string name;
 
 	public float StartIntensity { get; set; }
 
-	private float startIntensity;
+	float startIntensity;
 
 	public float EndIntensity { get; set; }
 
-	private float endIntensity;
+	float endIntensity;
 
 	public int StepsToCompleteAction { get; set; }
 
-	private int stepsToCompleteAction;
+	int stepsToCompleteAction;
 
 	public ADSRSetting(string name, float startIntensity, float endIntensity, int stepsToCompleteAction) {
 		this.Name = name;

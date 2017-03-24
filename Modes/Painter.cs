@@ -4,15 +4,19 @@ using trackingRoom.interfaces;
 public class Painter : MonoBehaviour, IMode
 {
 	//PRIVATE INSTANCE VARIABLES
-	private LightModel parent;
+	LightModel parent;
 	
 	//CONSTRUCTOR
 	public Painter (LightModel parent) {
 		this.parent = parent;
 	}
 	
-	public void OnUserDetection ()
-	{
+	#region IMode implementation
+	
+	public void OnUserDetectionChange (LampBehaviour originScript, string userTag, bool inRange){
+		
+		
 	}
-
+	
+	#endregion
 }

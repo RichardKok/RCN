@@ -7,6 +7,6 @@ public class LightApplication : BaseApplication<LightModel, LightView, LightCont
 {
 	public LampBehaviour[] LampScripts { get { return lampScripts = AssertArray<LampBehaviour> (lampScripts); } }
 
-	private LampBehaviour[] lampScripts;
+	LampBehaviour[] lampScripts;
 }
 

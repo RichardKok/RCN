@@ -33,24 +33,12 @@ namespace trackingRoom.util
 
 		public static float Speed (Vector2 prevPos, Vector2 curPos, DateTime prevDateTime, DateTime curDateTime)
 		{
-			return Speed (Magnitude (prevPos, curPos), curDateTime.Second - prevDateTime.Second);
+			return Speed (Vector3.Distance(prevPos, curPos), curDateTime.Second - prevDateTime.Second);
 		}
 
-		public static float Speed (float magnitude, float timeDiff)
+		public static float Speed (float distance, float timeDiff)
 		{
-			return (timeDiff > 0) ? magnitude / timeDiff : 0;
+			return (timeDiff > 0) ? distance / timeDiff : 0;
 		}
-
-		public static float Magnitude (Vector2 firstPos, Vector2 secondPos)
-		{ 
-			return Magnitude (new Vector3 (firstPos.x, firstPos.y, 0), new Vector3 (secondPos.x, secondPos.y, 0));
-		}
-
-		public static float Magnitude (Vector3 firstPos, Vector3 secondPos)
-		{ 
-			return new Vector3 (secondPos.x - firstPos.x, 
-				secondPos.y - firstPos.y, secondPos.z - firstPos.z).magnitude;
-		}
-
 	}
 }

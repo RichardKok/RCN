@@ -8,13 +8,18 @@ public class LampBehaviour : MonoBehaviour
 	//PUBLIC INSTANCE VARIABLES
 	public Switch SwitchSetting {
 		get { return switchSetting; } 
-		set { switchSetting = value; StartCoroutine (Scale ()); } } 	
+		set { switchSetting = value;
+			StartCoroutine (Scale ()); } } 	
 	private Switch switchSetting;
 	
 	public float Intensity {  
 		get { return intensity; }
-		set { intensity = value; //Debug.Log("Switchsetting " + SwitchSetting + " value" + intensity);
-			  DynamicGI.SetEmissive(renderer, color * intensity); } }
+		set { 
+			Debug.Log(value);
+			intensity = value; 
+			Color final = color * Mathf.LinearToGammaSpace(value);
+			renderer.material.SetColor("_EmissionColor", final); 
+			DynamicGI.SetEmissive(renderer, final); } }
 	private float intensity;
 	
 	public int Role { get; set; }
@@ -48,26 +53,24 @@ public class LampBehaviour : MonoBehaviour
 	}
 	
 	public void Update() {
-		if (Parent != null) CheckUserProximity();		
-	}
-	
-	public void CheckUserProximity ()
-	{
 		if (InReach(UserPos)) TurnLampOn();
 		else if (OutOfReach(UserPos)) TurnLampOff();
 	}
 	
 	public bool InReach(Vector3 position) {
-		return ((SwitchSetting == null || SwitchSetting.Name.Equals(Dictionary.Off)) && Vector3.Distance(ThisPos, position) <= VisualRange);
+		return ((SwitchSetting == null || SwitchSetting.Name.Equals(Dictionary.Off))
+			&& Vector3.Distance(ThisPos, position) <= VisualRange);
 	}
 	
 	public bool OutOfReach(Vector3 position) {
-		return ((SwitchSetting != null &&  SwitchSetting.Name.Equals(Dictionary.On)) && Vector3.Distance(ThisPos, position) > VisualRange);
+		return ((SwitchSetting != null &&  SwitchSetting.Name.Equals(Dictionary.On)) 
+			&& Vector3.Distance(ThisPos, position) > VisualRange);
 	}
 	
 	public void TurnLampOn() {
 		Switch onSwitch = new On();
 		onSwitch.CurrentPhase = Attack;
+		onSwitch.CurrentPhase.StartIntensity = Intensity;
 		SwitchSetting = onSwitch;
 		Debug.Log("Switching on ");
 	}
@@ -75,6 +78,7 @@ public class LampBehaviour : MonoBehaviour
 	public void TurnLampOff() {
 		Switch onSwitch = new Off();
 		onSwitch.CurrentPhase = Release;
+		onSwitch.CurrentPhase.StartIntensity = Intensity;
 		SwitchSetting = onSwitch;
 		Debug.Log("Switching off ");
 	}

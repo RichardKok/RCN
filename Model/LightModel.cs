@@ -30,6 +30,7 @@ public class LightModel : Model<LightApplication>
 	public void Start() {
 		foreach (LampBehaviour lamp in LampScripts) {
 			lamp.Parent = this;
+			lamp.Intensity = MinEmission;
 		}
 		attack = new ADSRSetting("attack", MinEmission, MaxEmission, AttackDuration);
 		sustain = new ADSRSetting("sustain", MaxEmission, MaxEmission, 1);
@@ -100,7 +101,7 @@ public class LightModel : Model<LightApplication>
 		float distance;
 		LampBehaviour closestLamp = null;
 		foreach (LampBehaviour lamp in LampScripts) {
-			distance = Util.Magnitude (originLamp.transform.position, lamp.transform.position);
+			distance = Vector3.Distance(originLamp.transform.position, lamp.transform.position);
 			if (!lamp.IsOrdered && !lamp.Role.Equals (originLamp) && distance < minDistance) {
 				minDistance = distance;
 				closestLamp = lamp;

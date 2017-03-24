@@ -6,15 +6,15 @@ using System;
 public class LampBehaviour : MonoBehaviour
 {
 	//PUBLIC INSTANCE VARIABLES
-	public Switch SwitchSetting { get { return switchSetting; } 
-		set { switchSetting = value; StartCoroutine (Scale ()); } } 
-	
+	public Switch SwitchSetting {
+		get { return switchSetting; } 
+		set { switchSetting = value; StartCoroutine (Scale ()); } } 	
 	private Switch switchSetting;
-	public float Intensity {  get { return intensity; }
-		set { intensity = value; Debug.Log("Switchsetting " + SwitchSetting + " value" + intensity);
-			  DynamicGI.SetEmissive(renderer, color * intensity);
-		} 
-	}
+	
+	public float Intensity {  
+		get { return intensity; }
+		set { intensity = value; //Debug.Log("Switchsetting " + SwitchSetting + " value" + intensity);
+			  DynamicGI.SetEmissive(renderer, color * intensity); } }
 	private float intensity;
 	
 	public int Role { get; set; }
@@ -29,9 +29,9 @@ public class LampBehaviour : MonoBehaviour
 	private Material material;
 	private new Renderer renderer;
 	private Color baseColor;
-	private GameObject user;
-	private GameObject goal;
-	
+
+	private ADSRSetting Attack { get { return Parent.attack; } }
+	private ADSRSetting  Release { get { return Parent.release; } }
 	private float VisualRange {	get { return Parent.VisualRange; } }
 	private Vector3 ThisPos { get { return transform.position; } }
 	private Vector3 PrevUserPos { get { return Parent.PrevPos; } }
@@ -53,15 +53,30 @@ public class LampBehaviour : MonoBehaviour
 	
 	public void CheckUserProximity ()
 	{
-		if ((SwitchSetting == null || SwitchSetting.Name.Equals(Dictionary.Off)) && Vector3.Distance(ThisPos, UserPos) <= VisualRange) {
-			Switch onSwitch = new On();
-			onSwitch.CurrentPhase = Parent.attack;
-			SwitchSetting = onSwitch;
-		} else if (SwitchSetting != null && SwitchSetting.Name.Equals(Dictionary.On) && Vector3.Distance(ThisPos, UserPos) > VisualRange){
-			Switch onSwitch = new Off();
-			onSwitch.CurrentPhase = Parent.release;
-			SwitchSetting = onSwitch;
-		}
+		if (InReach(UserPos)) TurnLampOn();
+		else if (OutOfReach(UserPos)) TurnLampOff();
+	}
+	
+	public bool InReach(Vector3 position) {
+		return ((SwitchSetting == null || SwitchSetting.Name.Equals(Dictionary.Off)) && Vector3.Distance(ThisPos, position) <= VisualRange);
+	}
+	
+	public bool OutOfReach(Vector3 position) {
+		return ((SwitchSetting != null &&  SwitchSetting.Name.Equals(Dictionary.On)) && Vector3.Distance(ThisPos, position) > VisualRange);
+	}
+	
+	public void TurnLampOn() {
+		Switch onSwitch = new On();
+		onSwitch.CurrentPhase = Attack;
+		SwitchSetting = onSwitch;
+		Debug.Log("Switching on ");
+	}
+	
+	public void TurnLampOff() {
+		Switch onSwitch = new Off();
+		onSwitch.CurrentPhase = Release;
+		SwitchSetting = onSwitch;
+		Debug.Log("Switching off ");
 	}
 	
 	public IEnumerator Scale ()  
